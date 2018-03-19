@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
 /**
  *Store the details of a To Do Task,
@@ -10,50 +10,27 @@ import java.util.Scanner;
  * 2018.03.11
  */
 
-public class Task {
+class Task{
+    private String taskName;
+    private String taskDate;
+    private String taskNote;
     
-    
-    private Scanner taskName;
-    private Scanner taskDate;
-    private Scanner taskNote;
-    private boolean isDone;
-     
-    
-    /**
-     * Constructor for objects of class Task.
-     * @param taskName 
-     */
-    public Task(Scanner taskName) {
-        Scanner name = new Scanner(System.in);
-        this.taskDate= null;
-        taskNote = null;
-        isDone = false;
-    }
-
-   
-    /**
-     * Return the taskName.
-     * @return 
-     */
-    public Scanner getName(){        
+    public Task(){
+    this.taskName = "Some simple task.";
+    this.taskDate = "2018.03.12";
+    this.taskNote = "You printed out something you crazy bastard! Here's a cookie.";
+    } 
+    public String getName(){
         return taskName;
     }
     
-    /**
-     * Return taskDate.      
-     * @return 
-     */
-    public Scanner getDate(){
+    public String getDate(){
         return taskDate;
     }
-    
-     /**
-     * Return taskNote.      
-     * @return 
-     */
-    public Scanner getNote(){
+  
+    public String getNote(){
         return taskNote;
     }
-   
+} 
             
-}
+
