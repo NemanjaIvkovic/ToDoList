@@ -34,7 +34,8 @@ public class CommandWords {
 
             return command;
 
-        } else {
+        }
+        else {
             return CommandWord.UNKNOWN;
         }
     }

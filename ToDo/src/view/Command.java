@@ -8,12 +8,13 @@ public class Command {
 
     private CommandWord commandWord;
 
-    public Command (CommandWord commandWord) {
+    public Command(CommandWord commandWord, String word2) {
 
         this.commandWord = commandWord;
     }
 
     public CommandWord getCommandWord() {
+
         return commandWord;
     }
 

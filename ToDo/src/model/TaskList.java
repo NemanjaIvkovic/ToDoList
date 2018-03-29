@@ -1,79 +1,135 @@
 package model;
+
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * ArrayList of <code>tasks</code>, from the Task class to be stored and manipulated
  * in this class
+ *
  * @author Nemanja
  */
 public class TaskList {
-    
-    ArrayList<Task> tasks = new ArrayList<>();
-    
-    /**
-     * Adds tasks to ArrayList of tasks.
-     * @param task Single task 
-     */
-    public void addTask(Task task){
-        tasks.add(new Task("","","",""));
+
+    private ArrayList<Task> tasks;
+
+    public TaskList() {
+        tasks = new ArrayList<>();
+
     }
-    
+
     /**
-     * Gets tasks from ArrayList. 
+     * Adds <code>tasks</code> to ArrayList of tasks.
+     *
+     * @param
      */
-    public int getNumberOfTasks(){
+    public void addTask(TaskDTO taskDTO) throws ParseException {
+        Task task = new Task(taskDTO);
+        tasks.add(task);
+    }
+
+    /**
+     * Gets number of tasks from ArrayList.
+     */
+/*
+    public int getNumberOfTasks() {
+
         return tasks.size();
     }
-    
-    /**
-     * This method filters tasks according to 
-     */
-    public void getDoneTasks(){
-    	ArrayList<Task> result = (ArrayList<Task>) tasks.stream()         // convert list to stream
-                .filter(task -> !true==(task.getIsDone()))                // we dont like mkyong
-                .collect(Collectors.toList());                            // collect the output and convert streams to a List
+*/
 
-        result.forEach(System.out::println);                              //output : spring, node
-    }
-    
-   
     /**
-     * Removes all members of the list.
-     * @return 
+     * This method prints out done tasks.
      */
-    public boolean removeCollection(){
-        return tasks.removeAll(tasks);
+    public void getDoneTasks() {
+        tasks.stream()
+                .filter(task -> true == task.getIsDone())
+                .forEach(System.out::println);
+
     }
-    
+
     /**
-     * 
-     * 
+     * This method prints out tasks that are not done.
      */
-    public void printTaskList(){
-        for(Task task : tasks){
-            System.out.println(task.getName() + " | " + task.getDate() + " | " +
-                    task.getProject() + " | " + task.getNote() + " | " + task.getIsDone());
+    public void getUndoneTasks() {
+        tasks.stream()
+                .filter(task -> false == task.getIsDone())
+                .forEach(System.out::println);
+    }
+
+    /**
+     * Sorts tasks by date and prints out.
+     */
+    public void sortTasksByDate() {
+        Collections.sort(this.tasks);
+        System.out.println("________________________________");
+        printTaskList();
+    }
+
+
+    /**
+     * Prints out task for wanted project.
+     */
+
+    public void getTasksByProject(String project) {
+        List<Task> filteredList = new ArrayList<>();
+        filteredList = tasks.stream()
+                .filter(task -> project.equals(task.getProject()))
+                .collect(Collectors.toList());
+        if (filteredList.isEmpty()) {
+            System.out.println("...");
+        } else {
+            printTaskList();
         }
     }
-    
-        
+/*
+    public boolean editTask(taskIndex){
+        Task taskToEdit = tasks.get(taskIndex - 1);
+
+        taskToEdit.editTask();
+    }
+*/
     /**
+     * Removes all members of the list.
+     *
+     * @return Returnes true if the removal was successful.
+     */
+    public boolean removeCollection() {
+        return tasks.removeAll(tasks);
+    }
+
+    /**
+     *
+     */
+    public void printTaskList() {
+        int i = 0;
+        for (Task task : tasks) {
+            System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())
+                    + "\nTask belongs to the project: " + task.getProject() + "\nTask Note: " + task.getNote() + "\nStatus: " + task.getStatus());
+            System.out.println();
+            i++;
+        }
+    }
+
+    public int index(){
+        int index = tasks.indexOf(tasks)+1;
+        return index;
+    }
+
+    /**
+     * System.out.println();
      * Adds hard coded number of tasks for testing purposes (to be deleted later).
      */
-    public void addTestTasks(){
-        
-        tasks.add(new Task("Learn to code", 03;02;2019, "SDA3", "You will learn something"));
-        tasks.add(new Task("Do the disshes.", "2018.02.30", "Home", "Wife is waching."));
-        tasks.add(new Task("Learn OOD", "2018.03.10", "SDA3", "You will learn something."));
-        tasks.add(new Task("Do To Do List", "2018.03.30", "SDA3", "Hope you will make it."));
-        tasks.add(new Task("Take a walk", "2018.03.17", "Free Time", "Let these legs work."));
-        tasks.add(new Task("Don't be stupid!!", "Always", "You", "You probably always will be."));
-        tasks.add(new Task("Clean the house.", "2018.03.18", "Home", "You know you like that hoover."));
-        tasks.add(new Task("Repair the bike.", "2044.14.20", "Free Time", "Winter is coming."));
-        tasks.add(new Task("Learn Swedish.", "2017.00.20", "You", "You will learn something"));
-        tasks.add(new Task("Call 911", "2018.03.30", "You", "Now you screwd up."));
+/*
+    public void addTestTasks() throws ParseException {
+        TaskDTO dto = new TaskDTO("Learn to code", "26/03/2018", "SDA3", "You will learn something");
+        tasks.add(new Task(dto));
+        TaskDTO dto1 = new TaskDTO("Do the dishes.", "30/02/2017", "Home", "Wife is watching.");
+        tasks.add(new Task(dto1));
     }
-   
-  
+*/
+
 }

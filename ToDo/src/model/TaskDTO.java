@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 
@@ -20,20 +15,22 @@ public class TaskDTO {
     private String taskNote;
     private boolean isDone;
 
-    public TaskDTO (String taskName, String project, Date dueDate) {
+    public TaskDTO (String taskName, Date taskDate, String project, String taskNote) {
 
         this.taskName = taskName;        
-        this.project = project;
         this.taskDate = taskDate;
-        this.isDone= false;
+        this.project = project;
+        this.taskNote = taskNote;
+        this.isDone = false;
+
     }
 
 
-    public String getTitle() {
+    public String getName() {
         return taskName;
     }
 
-    public Date getTaskDate() {
+    public Date getDate() {
         return taskDate;
     }
 
@@ -43,6 +40,10 @@ public class TaskDTO {
 
     public String getProject() {
         return project;
+    }
+
+    public String getNote() {
+        return taskNote;
     }
     
 }

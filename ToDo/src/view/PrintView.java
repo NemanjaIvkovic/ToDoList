@@ -12,6 +12,6 @@ public class PrintView {
 
     public void printInput(String message) {
         System.out.println(message + "\n");
-        System.out.print("> ");
+        System.out.print(">> ");
     }
 }
