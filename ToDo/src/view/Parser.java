@@ -2,7 +2,6 @@ package view;
 
 import controller.Controller;
 import model.TaskDTO;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,7 @@ public class Parser {
     private PrintView printView;
     private Scanner reader;
 
-    public Parser () {
+    public Parser() {
 
         commands = new CommandWords();
         controller = new Controller();
@@ -61,7 +60,7 @@ public class Parser {
      * @return If the <code>quit</code> command is detected returns <code>true</code>, if not returns <code>false<code/>.
      */
 
-    public boolean processCommand(Command command) {
+    public boolean processCommand(Command command) throws ParseException {
         boolean wantToQuit = false;
         CommandWord commandWord = command.getCommandWord();
         switch (commandWord) {
@@ -70,27 +69,50 @@ public class Parser {
                 break;
             case HELP:
                 printView.printMessage("This is help");
-                commands.showAll();
+                showCommands();
                 System.out.println();
                 break;
-            case TASK:
-                printView.printMessage("Create new task");
-                newTaskInput();
+            case NEW:
+                printView.printMessage("Now you are making a new Task.");
+                newTask();
                 break;
             case TASKS:
-                printView.printMessage("All tasks");
-                printView.printMessage("---------------");
-                controller.showAllTasks();
-                System.out.println("---------------");
-                break;                
+                printView.printMessage("Here are all of your tasks:");
+                printView.printMessage("___________________________");
+                controller.printTaskList();
+                printView.printMessage("***************************");
+                break;
+            case DATE:
+                printView.printMessage("List of tasks sorted by date in the ascending order.");
+                controller.getTasksByDate();
+                break;
+/*
+            case PROJECT:
+                printView.printMessage("List of tasks from the wanted project");
+                controller.getTasksByProject();
+                break;
+*/
+            case DONE:
+                printView.printMessage("Done Tasks:");
+                controller.getDoneTasks();
+                break;
+            case UNDONE:
+                printView.printMessage("Undone tasks:");
+                controller.getUndoneTasks();
+                break;
             case EDIT:
-                printView.printMessage("This is edit");
+                printView.printMessage("Enter the number of the task that you want to edit:");
+                //controller.editTask();
                 break;
             case REMOVE:
                 printView.printMessage("This is remove");
                 break;
+            case DELETE:
+                printView.printMessage("Your task list is deleted.");
+                controller.deleteTaskList();
+                break;
             case QUIT:
-                wantToQuit = quit(command);
+                wantToQuit = quit();
                 break;
         }
         return wantToQuit;
@@ -109,21 +131,14 @@ public class Parser {
     /**
      * Performs <code>quit</code> command and quits the application
      *
-     * @param command - receives <code>quit</code> command
+     *
+     *
      * @return false is there are two words and true if it is only <code>quit</code> command
      */
 
-    private boolean quit(Command command) {
-
-        if(command.hasSecondWord()) {
-            printView.printMessage("You want to quit what?!");
-
-            return false;
-        } else {
-
+    private boolean quit() {
             return true;
         }
-    }
 
     /**
      * Prints out beginning message
@@ -131,113 +146,56 @@ public class Parser {
 
     public void getPrintStart() {
 
-        printView.printMessage("Welcome to the ToDo Aplication");
+        printView.printMessage("Welcome to the ToDo Application");
         printView.printMessage("------------------------------");
     }
 
     public void getPrintExit() {
 
-        printView.printMessage("Thank for using ToDo Aplication");
+        printView.printMessage("Thank for using ToDo Application");
         printView.printMessage("-------------------------------");
     }
 
 
-    private void newUserInput() {
-        String userName;
-        String collectionName;
-        String title;
+    private void newTask() throws ParseException {
+        String taskName;
         String project;
         boolean correctDateFormat = true;
-        Date dueDate = new Date();
+        Date taskDate = null;
+        String taskNote;
         DateFormat dateParser = new SimpleDateFormat("dd/mm/yyyy");
 
-        printView.printInput("What is your name?");
 
 
-        userName = reader.nextLine();
+        printView.printInput("What is the name of your task?");
+        taskName = reader.nextLine();
 
-        controller.createUser(userName);
-
-        printView.printInput("What is the name of your ToDo list?");
-
-        collectionName = reader.nextLine();
-
-        controller.createTaskCollection(collectionName);
-
-        printView.printInput("What is your task?");
-
-        title = reader.nextLine();
-
-        printView.printInput("To which project does it belong?");
-
-        project = reader.nextLine();
-
-        printView.printMessage("What is the due date for the task?");
+        printView.printMessage("Enter the due date for the task?");
+        //taskDate = reader.nextLine();
 
         while(correctDateFormat){
             printView.printInput("Correct date input format is dd/mm/yyyy");
 
             try {
-                dueDate = dateParser.parse(reader.nextLine());
+                taskDate = dateParser.parse(reader.nextLine());
                 correctDateFormat = false;
             } catch (ParseException e) {
                 printView.printMessage("Date format is not correct.");
             }
         }
+        printView.printInput("To which project does it belong?");
+        project = reader.nextLine();
 
-        TaskDTO taskDTO = new TaskDTO(title, project, dueDate);
+        printView.printMessage("Add a note to your task:");
+        taskNote = reader.nextLine();
 
-        controller.createTask(taskDTO);
-        printView.printMessage("User name, list name and your first task are saved.");
-        printView.printMessage("!!!!!!!  Amazing  !!!!!!");
-        printView.printMessage("-------------------------------");
-
-    }
-
-    private void newTaskInput() {
-
-        String title;
-        String project;
-        boolean correctDateFormat = true;
-        Date dueDate = new Date();
-        DateFormat dateParser = new SimpleDateFormat("dd/mm/yyyy");
-
-
-        printView.printInput("What is your task?");
-
-        title = reader.nextLine();
+        TaskDTO taskDTO = new TaskDTO(taskName, taskDate, project, taskNote);
 
         System.out.println();
-        printView.printInput("To which project does it belong?");
 
-        project = reader.nextLine();
+        controller.makeNewTask(taskDTO);
+        printView.printMessage("New task is created successfully.");
+        printView.printMessage("---------------------------------");
 
-        printView.printMessage("What is the due date for the task?");
-
-        while(correctDateFormat){
-
-            printView.printInput("Correct date input format is dd/mm/yyyy");
-
-            try {
-                dueDate = dateParser.parse(reader.nextLine());
-                correctDateFormat = false;
-            } catch (ParseException e) {
-                printView.printMessage("Date format is not correct.");
-            }
-        }
-
-
-        TaskDTO taskDTO = new TaskDTO(title, project, dueDate);
-
-        controller.createTask(taskDTO);
-
-        printView.printMessage("Your task is saved");
-        printView.printMessage("-- What a joy! --");
-        printView.printMessage("-------------------------------");
-
-
-
-
-}
-
+    }
 }

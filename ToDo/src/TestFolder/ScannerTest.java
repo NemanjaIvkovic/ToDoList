@@ -16,11 +16,11 @@ public class ScannerTest {
     static Scanner test = new Scanner(System.in);
     public static void main(String[] args){
      System.out.println("Tell me your name please.");
-     String testScan = test.nextLine();
+     String name = test.nextLine();
      System.out.println("Please tell me your age");
      String ageNew = test.nextLine();
      
-     System.out.println("This is test " + testScan + ", your age is: " + ageNew);
+     System.out.println("This is test " + name + ", your age is: " + ageNew);
     }
     
 }

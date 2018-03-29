@@ -4,24 +4,17 @@
  * and open the template in the editor.
  */
 package main;
-import main.TaskList;
-import main.Task;
+import view.View;
+
+import java.text.ParseException;
 
 public class MainClass{
     
-    public static void main(String[] args) {
-        // ToDo list logic
-        //Task task1 = new Task("name", "date", "project", "note");
-        
-        //task1.printTask();
-        
-        TaskList testList = new TaskList();
-        
-        testList.addTestTasks();
-        
-        testList.printTaskList();
-        
-        //System.out.println(testList.getNumberOfTasks());
+    public static void main(String[] args) throws ParseException {
+        View view = new View();
+        view.start();
+
+
     }
 } 
 
