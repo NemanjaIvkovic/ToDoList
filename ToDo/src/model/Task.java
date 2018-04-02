@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.text.DateFormat;
@@ -11,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import view.PrintView;
-
-import javax.swing.text.html.parser.Parser;
 
 /**
  * This is a single task which is created by the TaskList class.
@@ -81,14 +74,26 @@ public class Task implements Comparable<Task> {
         this.taskDate = dateFormat.parse(taskDate);
     }
 
+    /**
+     * Set new project when user wants to edit project.
+     * @param project New project form user.
+     */
     public void setProject(String project) {
         this.project = project;
     }
 
+    /**
+     * Set new taskNote when user wants to edit taskNote.
+     * @param taskNote New taskNote from user.
+     */
     public void setTaskNote(String taskNote) {
         this.taskNote = taskNote;
     }
 
+    /**
+     * Returns status in a more suitable form for user ro read.
+     * @return status of the task set as Done or Undone.
+     */
     public String getStatus() {
         String status = "Undone";
         if (isDone == true) {
@@ -97,11 +102,19 @@ public class Task implements Comparable<Task> {
         return status;
     }
 
+    /**
+     * Compares two tasks on order to decide earlier due date.
+     * @param other Temporary task to compare with current one.
+     * @return Task with closer due date.
+     */
     @Override
     public int compareTo(Task other) {
         return this.taskDate.compareTo(other.getDate());
     }
 
+    /**
+     * Edits fields of task, sets new name, date, project, note or status to the wanted task.
+     */
     public void editTask() {
         boolean invalidChoice = true;
         while (invalidChoice) {
