@@ -1,6 +1,7 @@
 package model;
 
-import java.text.ParseException;
+import dbhandler.DbHandler;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,20 +27,10 @@ public class TaskList {
      *
      * @param
      */
-    public void addTask(TaskDTO taskDTO) throws ParseException {
+    public void addTask(TaskDTO taskDTO){
         Task task = new Task(taskDTO);
         tasks.add(task);
     }
-
-    /**
-     * Gets number of tasks from ArrayList.
-     */
-/*
-    public int getNumberOfTasks() {
-
-        return tasks.size();
-    }
-*/
 
     /**
      * This method prints out done tasks.
@@ -47,7 +38,8 @@ public class TaskList {
     public void getDoneTasks() {
         tasks.stream()
                 .filter(task -> true == task.getIsDone())
-                .forEach(System.out::println);
+                .forEach(x -> System.out.println("Task Name is: " + x.getName() + "\nTask Due Date is: " + x.dateFormat.format(x.getDate())
+                        + "\nTask belongs to the project: " + x.getProject() + "\nTask Note: " + x.getNote() + "\nStatus: " + x.getStatus()));
 
     }
 
@@ -57,7 +49,8 @@ public class TaskList {
     public void getUndoneTasks() {
         tasks.stream()
                 .filter(task -> false == task.getIsDone())
-                .forEach(System.out::println);
+                .forEach(x -> System.out.println("Task Name is: " + x.getName() + "\nTask Due Date is: " + x.dateFormat.format(x.getDate())
+                        + "\nTask belongs to the project: " + x.getProject() + "\nTask Note: " + x.getNote() + "\nStatus: " + x.getStatus()));
     }
 
     /**
@@ -75,23 +68,32 @@ public class TaskList {
      */
 
     public void getTasksByProject(String project) {
-        List<Task> filteredList = new ArrayList<>();
-        filteredList = tasks.stream()
+        List<Task> filteredList = tasks.stream()
                 .filter(task -> project.equals(task.getProject()))
                 .collect(Collectors.toList());
         if (filteredList.isEmpty()) {
-            System.out.println("...");
+            System.out.println("There is no such project.");
         } else {
-            printTaskList();
+            int i = 1;
+            for (Task task : filteredList) {
+                System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())
+                        + "\nTask belongs to the project: " + task.getProject() + "\nTask Note: " + task.getNote() + "\nStatus: " + task.getStatus());
+                System.out.println();
+                i++;
+            }
         }
     }
-/*
-    public boolean editTask(taskIndex){
-        Task taskToEdit = tasks.get(taskIndex - 1);
 
+    public void editTask(int taskIndex){
+
+        Task taskToEdit = tasks.get(taskIndex);
         taskToEdit.editTask();
     }
-*/
+
+    public void deleteTask(int taskIndex){
+        tasks.remove(taskIndex);
+    }
+
     /**
      * Removes all members of the list.
      *
@@ -105,18 +107,27 @@ public class TaskList {
      *
      */
     public void printTaskList() {
-        int i = 0;
+        int i = 1;
         for (Task task : tasks) {
-            System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())
+            System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())              //TODO Try to implement getting task indexes
                     + "\nTask belongs to the project: " + task.getProject() + "\nTask Note: " + task.getNote() + "\nStatus: " + task.getStatus());
             System.out.println();
             i++;
         }
     }
 
-    public int index(){
-        int index = tasks.indexOf(tasks)+1;
-        return index;
+    public void loadFromFile(){
+        DbHandler dbHandler = new DbHandler();
+        ArrayList<TaskDTO> taskDTOS = dbHandler.loadFromFile();
+
+        for (TaskDTO taskDTOS1 : taskDTOS){
+            addTask(taskDTOS1);
+        }
+
+    }
+
+    public void writeToFile(TaskList tasks){
+        
     }
 
     /**

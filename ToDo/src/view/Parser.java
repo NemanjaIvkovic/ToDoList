@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Parser {
@@ -32,25 +33,17 @@ public class Parser {
     public Command getCommand() {
         String inputLine;
         String word1 = null;
-        String word2 = null;
 
         printView.printInput("");
 
         inputLine = reader.nextLine();
 
-        Scanner tokanizer = new Scanner(inputLine);
-
-        if (tokanizer.hasNext()) {
-
-            word1 = tokanizer.next();
-
-            if (tokanizer.hasNext()) {
-
-                word2 = tokanizer.next();
-            }
+        Scanner tokenizer = new Scanner(inputLine);
+        if (tokenizer.hasNext()) {
+            word1 = tokenizer.next();
         }
 
-        return new Command(commands.getCommandWord(word1), word2);
+        return new Command(commands.getCommandWord(word1));
     }
 
     /**
@@ -86,12 +79,10 @@ public class Parser {
                 printView.printMessage("List of tasks sorted by date in the ascending order.");
                 controller.getTasksByDate();
                 break;
-/*
             case PROJECT:
                 printView.printMessage("List of tasks from the wanted project");
-                controller.getTasksByProject();
+                getTasksByProject();
                 break;
-*/
             case DONE:
                 printView.printMessage("Done Tasks:");
                 controller.getDoneTasks();
@@ -101,15 +92,19 @@ public class Parser {
                 controller.getUndoneTasks();
                 break;
             case EDIT:
-                printView.printMessage("Enter the number of the task that you want to edit:");
-                //controller.editTask();
-                break;
-            case REMOVE:
-                printView.printMessage("This is remove");
+                editTask();
                 break;
             case DELETE:
-                printView.printMessage("Your task list is deleted.");
+                deleteTask();
+                printView.printMessage("Task deleted successfully.");
+                break;
+            case LOAD:
+                controller.loadFromFile();
+                printView.printMessage("List of your task: ");
+                controller.printTaskList();
+            case REMOVE:
                 controller.deleteTaskList();
+                printView.printMessage("Your task list is deleted.");
                 break;
             case QUIT:
                 wantToQuit = quit();
@@ -122,7 +117,7 @@ public class Parser {
      * Shows all valid commands
      */
 
-    public void showCommands() {
+    void showCommands() {
         printView.printMessage("Available commands are: ");
         System.out.println();
         commands.showAll();
@@ -140,20 +135,44 @@ public class Parser {
             return true;
         }
 
+    private void editTask(){
+        String taskIndex;
+        controller.printTaskList();
+        printView.printMessage("Please enter number of the task that you want to edit.");
+        taskIndex = reader.nextLine();
+        controller.editTask(Integer.parseInt(taskIndex) - 1);
+    }
+
+    private void deleteTask(){
+        String taskIndex;
+        controller.printTaskList();
+        printView.printMessage("Please enter number of the task that you want to delete.");
+        printView.printMessage("");
+        taskIndex = reader.nextLine();
+        controller.deleteTask(Integer.parseInt(taskIndex) - 1);
+    }
+
+    private void getTasksByProject(){
+        String project;
+        printView.printMessage("Please enter the name of the project for witch you want to see tasks.");
+        project = reader.nextLine();
+        controller.getTasksByProject(project);
+    }
+
     /**
      * Prints out beginning message
      */
 
-    public void getPrintStart() {
+    void getPrintStart() {
 
         printView.printMessage("Welcome to the ToDo Application");
-        printView.printMessage("------------------------------");
+        printView.printMessage("-------------------------------");
     }
 
-    public void getPrintExit() {
+    void getPrintExit() {
 
-        printView.printMessage("Thank for using ToDo Application");
-        printView.printMessage("-------------------------------");
+        printView.printMessage("Thank you for using ToDo Application");
+        printView.printMessage("------------------------------------");
     }
 
 
@@ -174,7 +193,7 @@ public class Parser {
         //taskDate = reader.nextLine();
 
         while(correctDateFormat){
-            printView.printInput("Correct date input format is dd/mm/yyyy");
+            printView.printInput("Correct date format is dd/mm/yyyy");
 
             try {
                 taskDate = dateParser.parse(reader.nextLine());

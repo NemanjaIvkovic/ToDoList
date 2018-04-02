@@ -7,7 +7,7 @@ package view;
 public enum CommandWord {
 
     NEW("new"), TASK("task"), TASKS("tasks"), DATE("date"), PROJECT("project"), DONE("done"), UNDONE("undone"), EDIT("edit"),
-    REMOVE("remove"), HELP("help"), DELETE("delete"), QUIT("quit"), UNKNOWN("?");
+    REMOVE("remove"), HELP("help"), DELETE("delete"), LOAD("load"), QUIT("quit"), UNKNOWN("?");
 
 
     private String commandString;

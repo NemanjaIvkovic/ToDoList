@@ -1,8 +1,13 @@
 package controller;
 
+import model.Task;
 import model.TaskDTO;
 import model.TaskList;
+import dbhandler.DbHandler;
+
+import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,39 +26,8 @@ public class Controller {
 
     public void makeNewTask(TaskDTO taskDTO) throws ParseException {
         taskList.addTask(taskDTO);
-
-
-
-        //TaskDTO dto = new TaskDTO(title, date, project, note);
-/*
-        //check date
-
-
-
-        boolean isLegalDate(String s) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
-            sdf.setLenient(false);
-            return sdf.parse(s, new ParsePosition(0)) != null;
-        }
-
-        Task t;
-        try {
-            t = new Task(dto);
-        }
-        catch (ParseException e) {
-            System.out.println("Please name your Task.");
-        }
-
-        if (t != null) {
-            taskList.addTask(t);
-        }
-*/
     }
-/*
-    public void getNumberOfAllTasks(){
-        taskList.getNumberOfTasks();
-    }
-*/
+
     public void getDoneTasks(){
         taskList.getDoneTasks();
     }
@@ -66,6 +40,10 @@ public class Controller {
         taskList.printTaskList();
     }
 
+    public void deleteTask(int taskIndex){
+        taskList.deleteTask(taskIndex);
+    }
+
     public boolean deleteTaskList(){
         return taskList.removeCollection();
     }
@@ -76,6 +54,18 @@ public class Controller {
 
     public void getTasksByProject(String project){
         taskList.getTasksByProject(project);
+    }
+
+    public void editTask(int taskIndex){
+        taskList.editTask(taskIndex);
+    }
+
+    public void loadFromFile(){
+        taskList.loadFromFile();
+    }
+
+    public void writeToFile(){
+
     }
 
 }
