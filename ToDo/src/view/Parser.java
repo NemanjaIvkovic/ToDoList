@@ -102,6 +102,11 @@ public class Parser {
                 controller.loadFromFile();
                 printView.printMessage("List of your task: ");
                 controller.printTaskList();
+                break;
+            case SAVE:
+                controller.writeToFile();
+                printView.printMessage("Your tasks are saved.");
+                break;
             case REMOVE:
                 controller.deleteTaskList();
                 printView.printMessage("Your task list is deleted.");
@@ -176,7 +181,7 @@ public class Parser {
     }
 
 
-    private void newTask() throws ParseException {
+    private void newTask() {
         String taskName;
         String project;
         boolean correctDateFormat = true;
@@ -188,13 +193,9 @@ public class Parser {
 
         printView.printInput("What is the name of your task?");
         taskName = reader.nextLine();
-
         printView.printMessage("Enter the due date for the task?");
-        //taskDate = reader.nextLine();
-
         while(correctDateFormat){
             printView.printInput("Correct date format is dd/mm/yyyy");
-
             try {
                 taskDate = dateParser.parse(reader.nextLine());
                 correctDateFormat = false;

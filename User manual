@@ -1,0 +1,29 @@
+This is simple program that allows user to make and save tasks and put them in a list.
+
+Program allows user to make new task by typing "new" in a text interface.
+After that user will be asked to give the name of the task.
+
+After name user shell put due date for his/hers task, date shall be written in
+format "dd/mm/yyy", otherwise input will be rejected until the correct format is entered. It is possible to enter date
+in format "d/m/y" and program will automatically rewrite input to be "0d/0m/000y". Program does not check if the date is
+in the past, that is left as a free choice to user to enter.
+
+After the date is entered in correct format, program will ask the user to enter project to wich the task belongs and
+note about the task. Every field except date can be left blank.
+
+It is possible for the user to list the whole list of tasks by typing command "tasks", or a single task by typing
+"task". When listing a single task, program will ask user for the number of the task which he/she wants to see.
+
+User has the ability to list tasks by due date by typing command "date", or filter tasks by project.
+
+User can edit every task by typing command "edit", than he/she will be asked for the number of task which he/she wants
+to edit, after what he/she will have to choose what fields to edit by typing numbers 1 - 5 for the options which will
+be presented.
+
+User is able to delete single task by typing command "delete" or remove the whole list with command "remove".
+
+User is able to save to and to load from a file by typing "load" or "save", respectively.
+
+I is possible for user to type "help" which will show him/her all available commands.
+
+Pogram is closed with command "quit".

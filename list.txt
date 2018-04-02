@@ -1,3 +1,2 @@
-Nemanja%%%27/27/1111%%%JAVA%%%note1
-Aca%%%22/22/2222%%%JAVA%%%note2
-Joca%%%33/33/3333%%%joca%%%note3
+1%%%01/11/0001%%%java%%%note
+Nemanja2%%%01/02/0003%%%jabav2%%%note

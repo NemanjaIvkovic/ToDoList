@@ -2,6 +2,7 @@ package model;
 
 import dbhandler.DbHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class TaskList {
     /**
      * Adds <code>tasks</code> to ArrayList of tasks.
      *
-     * @param
+     * @param taskDTO Task DTO contains all data for the task.
      */
     public void addTask(TaskDTO taskDTO){
         Task task = new Task(taskDTO);
@@ -33,7 +34,7 @@ public class TaskList {
     }
 
     /**
-     * This method prints out done tasks.
+     * Filters and prints out done tasks.
      */
     public void getDoneTasks() {
         tasks.stream()
@@ -44,7 +45,7 @@ public class TaskList {
     }
 
     /**
-     * This method prints out tasks that are not done.
+     * Prints out tasks that are not done.
      */
     public void getUndoneTasks() {
         tasks.stream()
@@ -64,7 +65,9 @@ public class TaskList {
 
 
     /**
-     * Prints out task for wanted project.
+     * Asks for project, than filters list and pints out tasks for wanted project. If entered non existing project
+     * informs user about that.
+     * @param project project for which user wants tasks.
      */
 
     public void getTasksByProject(String project) {
@@ -84,6 +87,10 @@ public class TaskList {
         }
     }
 
+    /**
+     * Takes index of the task use wants to edit and calls method for editing task.
+     * @param taskIndex Index of the task user wants to edit.
+     */
     public void editTask(int taskIndex){
 
         Task taskToEdit = tasks.get(taskIndex);
@@ -104,18 +111,21 @@ public class TaskList {
     }
 
     /**
-     *
+     * Formats and prints out the whole task list and adds counter to print out the number of task.
      */
     public void printTaskList() {
         int i = 1;
         for (Task task : tasks) {
-            System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())              //TODO Try to implement getting task indexes
+            System.out.println("Task number: " + i + "\nTask Name is: " + task.getName() + "\nTask Due Date is: " + task.dateFormat.format(task.getDate())
                     + "\nTask belongs to the project: " + task.getProject() + "\nTask Note: " + task.getNote() + "\nStatus: " + task.getStatus());
             System.out.println();
             i++;
         }
     }
 
+    /**
+     * Makes new <code>bdHandler</code> object gets DTOs of task, puts it in a list and adds to the new list.
+     */
     public void loadFromFile(){
         DbHandler dbHandler = new DbHandler();
         ArrayList<TaskDTO> taskDTOS = dbHandler.loadFromFile();
@@ -126,12 +136,23 @@ public class TaskList {
 
     }
 
-    public void writeToFile(TaskList tasks){
-        
+    /**
+     * Writes tasks from taskList to the file.
+     */
+    public void writeToFile(){
+        ArrayList<Task> tasks = this.tasks;
+
+        DbHandler dbHandler = new DbHandler();
+        try {
+            dbHandler.writeToFile(tasks);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Saving failed.");
+        }
+
     }
 
     /**
-     * System.out.println();
      * Adds hard coded number of tasks for testing purposes (to be deleted later).
      */
 /*

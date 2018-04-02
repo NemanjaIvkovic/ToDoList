@@ -1,7 +1,7 @@
 package dbhandler;
+
 import model.Task;
 import model.TaskDTO;
-import model.TaskList;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,7 +28,7 @@ public class DbHandler {
         dateFormat = new SimpleDateFormat("dd/mm/yyyy");
 
 
-        File file = new File(".");                                                  //TODO Solve the problem of the missing txt file
+        File file = new File(".");
         for(String fileNames : file.list()) System.out.println(fileNames);
 
 
@@ -44,7 +44,7 @@ public class DbHandler {
 
     public ArrayList<TaskDTO> loadFromFile(){
         ArrayList<TaskDTO> tasks = new ArrayList<>();
-        while (scanner.nextLine() != null) {
+        while (scanner.hasNext()) {
             String task = scanner.nextLine();
             String[] taskData = task.split("%%%");
             String taskName = taskData[0];
@@ -64,13 +64,13 @@ public class DbHandler {
         return tasks;
     }
 
-    public void writeToFile(ArrayList<Task> tasks, File fileName) throws IOException {
+    public void writeToFile(ArrayList<Task> tasks) throws IOException {
 
         Path filePath = Paths.get(FILE_NAME + FILE_FORMAT).toAbsolutePath();
         FileWriter writer = new FileWriter(filePath.toString());
         try(BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             for (Task task : tasks) {
-                bufferedWriter.write(task.getNote() + "%%%" + dateFormat.format(task.getDate()) + "%%%" + task.getProject() +
+                bufferedWriter.write(task.getName() + "%%%" + dateFormat.format(task.getDate()) + "%%%" + task.getProject() +
                         "%%%" + task.getNote() + "\n");
             }
             bufferedWriter.close();

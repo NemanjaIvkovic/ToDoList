@@ -1,13 +1,7 @@
 package controller;
 
-import model.Task;
 import model.TaskDTO;
 import model.TaskList;
-import dbhandler.DbHandler;
-
-import java.io.File;
-import java.text.ParseException;
-import java.util.ArrayList;
 
 /**
  *
@@ -15,16 +9,13 @@ import java.util.ArrayList;
  */
 public class Controller {
 
-
     private TaskList taskList;
-
-
 
     public Controller(){
         taskList = new TaskList();
     }
 
-    public void makeNewTask(TaskDTO taskDTO) throws ParseException {
+    public void makeNewTask(TaskDTO taskDTO){
         taskList.addTask(taskDTO);
     }
 
@@ -65,7 +56,6 @@ public class Controller {
     }
 
     public void writeToFile(){
-
+        taskList.writeToFile();
     }
-
 }
